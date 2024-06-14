@@ -1,19 +1,18 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"fuuuuuuuuuk/views"
 	"log"
 	"net/http"
-	"path/filepath"
 )
 
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, filepath.Join("views", "index.html"))
-	})
 
-	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("views"))))
+	mux.HandleFunc("/", index)
+	mux.HandleFunc("/send", postSend)
 
 	fmt.Println("starting server on port :8080 ")
 
@@ -21,4 +20,14 @@ func main() {
 	if err != nil {
 		log.Printf("error: %v", err)
 	}
+}
+
+func postSend(w http.ResponseWriter, r *http.Request) {
+	val := r.PostFormValue("send")
+	log.Println(val)
+}
+
+func index(w http.ResponseWriter, r *http.Request) {
+	views.Body().Render(context.Background(), w)
+
 }

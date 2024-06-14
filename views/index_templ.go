@@ -10,6 +10,8 @@ import "context"
 import "io"
 import "bytes"
 
+import "fuuuuuuuuuk/data"
+
 func head() templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -23,7 +25,7 @@ func head() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Todo-app</title><script src=\"https://cdn.tailwindcss.com\"></script><script src=\"https://unpkg.com/htmx.org@1.9.12\" integrity=\"sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2\" crossorigin=\"anonymous\"></script></head>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Todo-app</title><script src=\"https://cdn.tailwindcss.com\"></script><script src=\"https://unpkg.com/htmx.org@1.9.12\" integrity=\"sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2\" crossorigin=\"anonymous\"></script></head>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -47,19 +49,23 @@ func Body() templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		templ_7745c5c3_Err = head().Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body class=\"bg-sky-900\"><div class=\"mx-auto my-10 w-96 space-y-2 rounded-lg border border-slate-600 bg-white px-20 py-10 shadow-2xl\"><h1 class=\"-mx-10 pb-4 font-mono text-4xl font-semibold text-slate-800 underline decoration-cyan-200 transition ease-in-out hover:decoration-cyan-500\">Todo App</h1><div class=\"flex items-center space-x-4\"><form action=\"\"><input class=\"-ml-10 rounded-md border border-slate-700 px-4 py-1 font-mono focus:bg-cyan-50\" type=\"text\" placeholder=\"Another thing to do!\"></form><button class=\"font-mo ml-2 rounded-md border border-cyan-950 bg-cyan-200 p-1 px-3 transition hover:bg-cyan-300\">❤</button></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body class=\"bg-sky-900\"><div class=\"mx-auto my-10 w-96 space-y-2 rounded-lg border border-slate-600 bg-white px-20 py-10 shadow-2xl\"><h1 class=\"-mx-10 pb-4 font-mono text-4xl font-semibold text-slate-800 underline decoration-cyan-200 transition ease-in-out hover:decoration-cyan-500\">Todo App</h1><div class=\"flex items-center space-x-4\"><form action=\"\"><input class=\"-ml-10 rounded-md border border-slate-700 px-4 py-1 font-mono focus:bg-cyan-50\" type=\"text\" placeholder=\"Another thing to do!\"></form><button hx-post=\"/send\" name=\"send\" class=\"font-mo ml-2 rounded-md border border-cyan-950 bg-cyan-200 p-1 px-3 transition hover:bg-cyan-300\">❤</button></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Todo(item).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Todo(data.Note).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"relative mx-auto my-3 w-96 rounded-lg border border-slate-600 bg-cyan-200 py-2 text-center font-mono text-lg font-normal shadow-md hover:bg-cyan-300\"><span>text to remove</span> <button class=\"absolute right-2 top-1/2 -translate-y-1/2 transform rounded-md border bg-red-400 px-2 text-white hover:bg-red-500\">✕</button></div></body>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -70,7 +76,7 @@ func Body() templ.Component {
 	})
 }
 
-func Todo(i string) templ.Component {
+func Todo(i []string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -83,6 +89,33 @@ func Todo(i string) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"relative mx-auto my-3 w-96 rounded-lg border border-slate-600 bg-cyan-200 py-2 text-center font-mono text-lg font-normal shadow-md hover:bg-cyan-300\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for _, item := range i {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(item)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/index.templ`, Line: 41, Col: 15}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span> <button class=\"absolute right-2 top-1/2 -translate-y-1/2 transform rounded-md border bg-red-400 px-2 text-white hover:bg-red-500\">✕</button>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		if !templ_7745c5c3_IsBuffer {
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
 		}
