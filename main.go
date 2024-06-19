@@ -28,6 +28,9 @@ func postSend(w http.ResponseWriter, r *http.Request) {
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
-	views.Body().Render(context.Background(), w)
+	err := views.Body().Render(context.Background(), w)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 }
